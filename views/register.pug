@@ -1,0 +1,54 @@
+doctype html
+html
+    head
+
+            link(href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet")
+
+            link(href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css" rel="stylesheet")
+
+            script(src="https://code.jquery.com/jquery-3.2.1.min.js")
+
+            script(src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js")
+
+            script(src="/js/test.js")
+
+            title HomePage
+
+
+    body
+        div
+            .card-panel.hoverable.purple.darken-3(class='#6a1b9a')
+                a.brand-logo(href='#') Logo
+                br
+                h3.flow-text.center ApniCare
+                br
+
+
+
+                .row
+                    .col.s12.purple.darken-3
+                        li.tab.col.s3.a(href='#test1',data-activates='dropdown1').purple.darken-3.btn.dropdown-button perscription
+                            ul#dropdown1.dropdown-content
+                                li.a(href='#!') bycondition
+                                li.a(href='#!') bymanufacturer
+                                li.divider
+                                li.a(href='#!') search alphabetically
+                        li.tab.col.s3.a(href='#test2',data-activates='dropdown1').purple.darken-3.btn.dropdown-button.purple.darken-3 health
+                        li.tab.col.s3.disabled.a(href="#test3",data-activates='dropdown1').purple.darken-3.btn.dropdown-button.purple.darken-3 OTC
+                        li.tab.col.s3.a(href="#test4",data-activates='dropdown1').purple.darken-3.btn.dropdown-button.purple.darken-3 diabetes
+
+            a.btn.waves-effect.waves-light.modal-trigger.right(href="#modal1")#registerbutton register
+            div#modal1.modal.modal-fixed-footer
+                    div.modal-content
+                        h4.center Register
+                        div.input-field.col.s12
+                            input(type="text")#name
+                            label(for="name") name
+                        div.input-field.col.s12
+                            input(type="text")#number
+                            label(for="number") number
+                        div.input-field.col.s12
+                            input(type="password")#password
+                            label(for="password") Password
+                    div.modal-footer
+                        a(href="/profile").modal-action.modal-close.waves-effect.waves-green.btn-flat#submitButton submit
