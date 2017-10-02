@@ -4,10 +4,10 @@ var bodyparser = require('body-parser');
 var path = require('path');
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
+
 //var deviceDetect = require('device-detect') ();
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
-
 
 var User = require('./model/register');
 
@@ -20,8 +20,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 //app.set('trust proxy', 1);
 
-
-
 //set all middleware
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({extended : true}));
@@ -32,7 +30,6 @@ app.use(session({
     resave : false,
     saveUninitialized : true
 }));
-
 
 app.get('/register',function (req,res) {
     if(req.session.userID) {
@@ -55,7 +52,6 @@ app.post('/register',function (req,res) {
        }
    });
 });
-
 
 app.get('/login',function (req,res) {
     if(req.session.userID) {
@@ -83,7 +79,6 @@ app.post('/login',function (req,res) {
         }
     });
 });
-
 
 app.get('/nextpage',function (req,res) {
     console.log(req.session.userID);
@@ -115,13 +110,6 @@ app.get('/profile',function (req,res) {
 
     res.render('profile',{number : req.session.userID});
 });
-
-
-
-
-
-
-
 // store database
 var db = 'mongodb://localhost/Test';
 mongoose.connect(db,{ useMongoClient: true });
