@@ -1,5 +1,5 @@
+//schema for registration
 var mongoose = require('mongoose');
-
 
 var User = new mongoose.Schema({
     Name : {type : String},
