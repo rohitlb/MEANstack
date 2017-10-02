@@ -1,11 +1,13 @@
-// require dependicies
+// require dependencies
+var path = require('path');
 var express = require('express');
 var bodyparser = require('body-parser');
-var path = require('path');
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 //var deviceDetect = require('device-detect') ();
+
+// dependency for session
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
 
