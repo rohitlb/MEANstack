@@ -1,125 +1,146 @@
-// require dependencies
-var path = require('path');
 var express = require('express');
-var bodyparser = require('body-parser');
-var mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
+var bodyParser = require('body-parser');
+var config = require('./server/config');
+var async = require('async');
 
-//var deviceDetect = require('device-detect') ();
+var User = require('./models/User');
 
-// dependency for session
-var session = require('express-session');
-var cookieParser = require('cookie-parser');
-
-var User = require('./model/register');
-
-//declare the app
 var app = express();
 
-//configure the app
-app.set('port',4000);
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
-//app.set('trust proxy', 1);
+app.use(bodyParser.json());
+app.use(express.static('public'));
 
-//set all middleware
-app.use(bodyparser.json());
-app.use(bodyparser.urlencoded({extended : true}));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname,'public')));
-app.use(session({
-    secret : 'keyboard cat',
-    resave : false,
-    saveUninitialized : true
-}));
+app.get('/',function (req,res) {
 
-app.get('/register',function (req,res) {
-    if(req.session.userID) {
-        res.redirect('/nextpage');
-    } else {
-        res.render('register');
-    }});
-
-app.post('/register',function (req,res) {
-   var user = new User({
-       Name : req.body.name,
-       Number : req.body.number,
-       Password : req.body.password
-   });
-   user.save(function (err) {
-       if(err) {
-           console.log(err);
-       }else {
-           res.redirect('/login');
-       }
-   });
-});
-
-app.get('/login',function (req,res) {
-    if(req.session.userID) {
-        res.redirect('/nextpage');
-    } else {
-        res.render('login');
-    }
-});
-
-app.post('/login',function (req,res) {
-    User.findOne({Number: req.body.number , Password : req.body.password}).exec(function (err,results) {
-        if(err){
-            console.log("Some error occurred");
-            res.send(JSON.stringify({failure : "some error occurred"}));
-            res.end();
-        } else {
-
-            if(results) {
-                req.session.userID = req.body.number;
-                console.log("Successfully login");
-               // res.send(JSON.stringify({success : "login"}));
-                res.end();
-            }
-            res.redirect('/nextpage');
+    var user = new User(
+        {
+            username: 'akarsh',
+            password: 'abc'
         }
-    });
+    );
+
+    res.send('we are done');
+    res.end();
+
 });
 
-app.get('/nextpage',function (req,res) {
-    console.log(req.session.userID);
-    if(req.session.userID) {
-        res.render('profile', {number :req.session.userID});
-    } else {
-        console.log("check your name or password");
-        res.send(JSON.stringify({failure : "check your number or password"}));
-        res.end();
+app.get('/test',function (req, res) {
 
-    }
+    async.parallel(
+        [
+            function (callback) {
+                var name = {first_name: "akarsh", last_name: "sachdeva"};
+                callback(null,name);
+            },
+            function (callback) {
+                var education = {year: "2017", course: "Btech"};
+                callback(null,education);
+            },
+            function (callback) {
+                var skills = ['none','none','none'];
+                callback(null,skills);
+            }
+        ],
+        function (err, results) {
+
+            if(err)
+            {
+                console.log('you hatched up');
+                res.send('oops');
+                res.end();
+                return;
+            }
+
+            var data =
+                {
+                    "personal" : results[0],
+                    "education" : results[1],
+                    "skills" : results[2]
+                };
+
+            res.send(JSON.stringify(data));
+            res.end();
+            return;
+        }
+    );
+
 });
 
-app.get('/logout',function (req,res) {
-   res.render('logout');
+
+app.get('/series',function (req, res) {
+
+    async.series(
+        [
+            function (callback) {
+                var name = {first_name: "akarsh", last_name: "sachdeva"};
+                callback(null,name);
+            },
+            function (callback) {
+                var education = {year: "2017", course: "Btech"};
+                callback(null,education);
+            },
+            function (callback) {
+                var skills = ['none','none','none'];
+                callback(null,skills);
+            }
+        ],
+        function (err, results) {
+
+            if(err)
+            {
+                console.log('you hatched up');
+                res.send('oops');
+                res.end();
+                return;
+            }
+
+            var data =
+                {
+                    "personal" : results[0],
+                    "education" : results[1],
+                    "skills" : results[2]
+                };
+
+            res.send(JSON.stringify(data));
+            res.end();
+            return;
+        }
+    );
+
 });
 
-app.get('/startlogout',function (req,res) {
-    req.session.destroy(function (err) {
-       if(err) {
-           console.log(err);
-       } else {
-           res.redirect('/login');
-       }
-    });
-});
 
-app.get('/profile',function (req,res) {
 
-    res.render('profile',{number : req.session.userID});
-});
-// store database
-var db = 'mongodb://localhost/Test';
-mongoose.connect(db,{ useMongoClient: true });
-//start server
-var database = mongoose.connection;
-database.on('open',function () {
-    console.log("database is connected");
-    app.listen(app.get('port'), function () {
-        console.log('server connected to http:localhost:' + app.get('port'));
-    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+app = config(app);
+
+
+app.listen(2000,function () {
+    console.log('server started');
 });
