@@ -5,7 +5,5 @@ module.exports = {
         console.log('this is called');
     },
     register: function (req, res) {
-
     }
-
 };

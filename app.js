@@ -109,37 +109,7 @@ app.get('/series',function (req, res) {
 
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 app = config(app);
-
 
 app.listen(2000,function () {
     console.log('server started');
